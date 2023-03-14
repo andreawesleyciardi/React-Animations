@@ -1,0 +1,15 @@
+section {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+
+    &#monitor {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &#jira {
+        background-color: #FFFFFF;
+    }
+}

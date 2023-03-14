@@ -1,0 +1,18 @@
+:root {
+    --background: #24292F;
+    --primary: #08FDD8;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background);
+    position: relative;
+    overflow-x: hidden;
+}
