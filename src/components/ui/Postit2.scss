@@ -1,0 +1,81 @@
+//colors
+$bg: #CFE2F0;
+$blue: #48809E;
+$shadow-color: rgba($blue, 0.8);
+
+$width: 300px;
+$height: 430px;
+$padding: 15px;
+$radius: 5px;
+
+@mixin animation( $flip-left, $opacity, $bottom: 4.2*$padding ){
+    $flip-width: $width - $flip-left*2;
+    width: $flip-width;
+    left: $flip-left;
+    box-shadow: 0px 0px 10px $flip-left $shadow-color;
+    opacity: $opacity;
+    height: $height/2 - $bottom;
+}
+
+//single div length 
+$length : ($height/2 - 1.5*$padding)/10;
+//flipping page clip
+.wind-paper{
+  position: relative;
+//   top: 0;
+//   left:($width/2 - $width/16);
+  z-index: 2;
+  h2 {position: absolute;}
+  div{
+    height: $length;
+    width: $width;
+    transform-origin: 100% 0;
+    transform-style: preserve-3d;
+    position: absolute;
+    top: calc(100% - 1px);
+    background: #fff;
+    transform: rotateX(-5deg);
+    
+  }
+  &:after{
+    content: "";
+    transform: translateZ(-1000px);
+    display: block;
+    background: rgba($blue, 0.8);
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    
+  }
+  &:hover {
+    div{
+        animation: flip 1s ease-in-out infinite;
+    }
+    &:after{
+        animation: flip-shadow 1s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes flip {
+  0% { transform: rotateX(-5deg)
+                    }
+  50% { transform: rotateX(-8deg)
+                   rotateY(-2deg);}
+  100% { transform: rotateX(-5deg)
+                    }
+}
+
+@keyframes flip-shadow {
+  $color: rgba($blue, 0.8);
+  0% { 
+    @include animation(5px, 1);
+  }
+  50% { 
+    @include animation(15px, 0.3, 100px);
+    }
+  100% {
+    @include animation(5px, 1);
+  }
+}
+

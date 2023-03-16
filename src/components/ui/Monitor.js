@@ -6,8 +6,8 @@ import useMeasure from 'react-use-measure';
 
 
 const StyledMonitor = styled(motion.div)`
-    --width: 50vmin;
-    --height: 30vmin;
+    --width: 90vmin;
+    --height: 56.25vmin;
     --depth: 20vmin;
     --hue: 30;
     --alpha: 0.8;
@@ -23,9 +23,10 @@ const StyledMonitor = styled(motion.div)`
     transform-style: preserve-3d;
     perspective-origin: 50% 50%;
 
-    transform: rotateX(-24deg) rotateY(24deg);
+    transform: rotateX(0deg) rotateY(0deg);
 
-    --border: 5px solid var(--color);
+    --border-thick: 2.75vmin;
+    --border: var(--border-thick) solid var(--color);
 
     .monitor__face {
         position: absolute;
@@ -48,9 +49,18 @@ const StyledMonitor = styled(motion.div)`
         transform: translate(-50%, -50%) translate3d(0, 0, calc(var(--depth) * var(--coeff)));
     }
     .monitor__face--front {
-        border: 2.5vmin solid var(--color);
         --coeff: 0.5;
+        // box-shadow: 2px 2px 5px 2px rgba(255,255,255,0.3);
     }
+    // .monitor__face--front::after {
+    //     content: "DELL";
+    //     color: #FFFFFF;
+    //     font-weight: 900;
+    //     position: absolute;
+    //     left: 50%;
+    //     top: calc(100% + (var(--border-thick) / 2));
+    //     transform: translateX(-50%) translateY(-50%);
+    // }
 
     .monitor__face--left,
     .monitor__face--right {
@@ -132,13 +142,21 @@ const StyledMonitor = styled(motion.div)`
         height: var(--height);
         transform: rotateY(90deg) translateZ(calc((var(--width) / 2) - (var(--depth) / 2)));
     }
+
+    .monitor__screen {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 2px 2px 5px 2px rgba(255,255,255,0.3);
+    }
 `;
 
 const Monitor = ({children}) => {
     
     return (
         <StyledMonitor className="monitor">
-            <div className="monitor__face monitor__face--front">{children}</div>
+            <div className="monitor__face monitor__face--front"><div className="monitor__screen">{children}</div></div>
             <div className="monitor__face monitor__face--back"></div>
             <div className="monitor__face monitor__face--left"></div>
             <div className="monitor__face monitor__face--right"></div>

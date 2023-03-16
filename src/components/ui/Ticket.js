@@ -58,7 +58,7 @@ const AnimatedTicket = (props) => {
     const isInView = useInView(ref, { amount: 0.2 });
 
     useEffect(() => {
-        console.log("Element is in view: ", isInView);
+        //console.log("Element is in view: ", isInView);
     }, [isInView])
 
     return (

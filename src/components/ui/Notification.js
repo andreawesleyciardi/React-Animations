@@ -7,8 +7,7 @@ import Button from './Button';
 
 
 
-const StyledClosedNotification = styled(motion.div)`
-    
+const StyledCollapsedNotification = styled(motion.div)`
     padding: 1rem 2rem;
     background-color: #FFFFFF;
     display: flex;
@@ -20,7 +19,7 @@ const StyledClosedNotification = styled(motion.div)`
     z-index: 99;
 `;
 
-const StyledOpenedNotification = styled(motion.div)`
+const StyledExpandedNotification = styled(motion.div)`
     width: 100%;
     height: 100%;
     position: absolute;
@@ -64,7 +63,8 @@ const Notification = ({title, subtitle, content}) => {
             transition: {
                 duration: 0.5
             }
-        }
+        },
+        exit: { y: '-100vh', opacity: 0, transition: { duration: 1 }, transitionEnd: { display: 'none' } }
     }
 
     return (
@@ -72,7 +72,7 @@ const Notification = ({title, subtitle, content}) => {
             {
                 isCollapsed == null
                 &&
-                    <StyledClosedNotification className="notification" layoutId={layoutId} variants={variants} initial="initial" animate="enter" ref={refCollapsed}>
+                    <StyledCollapsedNotification className="notification" layoutId={`notification-${layoutId}`} variants={variants} initial="initial" animate="enter" ref={refCollapsed}>
                         <motion.h2>{title}</motion.h2>
                         {
                             subtitle
@@ -80,14 +80,14 @@ const Notification = ({title, subtitle, content}) => {
                                 <motion.h5>{subtitle}</motion.h5>
                         }
                         <Button onClick={() => setIsCollapsed(true)}>Read</Button>
-                    </StyledClosedNotification>
+                    </StyledCollapsedNotification>
             }
 
             <AnimatePresence>
                 {
                     isCollapsed
                     &&
-                        <StyledOpenedNotification className="test" layoutId={layoutId} exit={{ y: '-100vh', opacity: 0, transition: { duration: 1 } }}>
+                        <StyledExpandedNotification className="test" layoutId={`notification-${layoutId}`} variants={variants} exit="exit">
                             <div>
                                 <motion.h2>{title}</motion.h2>
                                 <motion.h5>{subtitle}</motion.h5>
@@ -95,7 +95,7 @@ const Notification = ({title, subtitle, content}) => {
                                 <motion.p>{content}</motion.p>
                                 <Button onClick={() => setIsCollapsed(false)}>Close</Button>
                             </div>
-                        </StyledOpenedNotification>
+                        </StyledExpandedNotification>
                 }
             </AnimatePresence>
         </>
