@@ -3,6 +3,10 @@ section {
     height: 100vh;
     position: relative;
 
+    &#postit {
+        background-color: red;
+    }
+
     &#monitor {
         display: flex;
         align-items: center;
@@ -11,5 +15,12 @@ section {
 
     &#jira {
         background-color: #FFFFFF;
+    }
+
+    .postits__container {
+        height: 100%;
+    }
+    .postits__postit-container {
+        z-index: 10;
     }
 }

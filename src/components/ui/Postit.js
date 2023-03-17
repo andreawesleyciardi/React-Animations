@@ -4,21 +4,16 @@ import { color, motion, useAnimationControls, useInView, useScroll, useTransform
 import useMeasure from 'react-use-measure';
 import { mergeRefs } from 'react-merge-refs';
 
+import { getRandomIntInclusive } from './../../services/Utilities';
 import toPx from './../../services/ToPx';
 
 var convertCssUnits = require('css-unit-converter');
 
 
 
-function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 const postitColors = [
     '#ff5db8',
-    '#d4f635',
+    '#a6f600',
     '#ffb32e',
     '#eff56d'
 ];
@@ -34,15 +29,25 @@ const StyledPostit = styled(motion.div)`
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    position: absolute;
+    // position: absolute;
     z-index: 10;
     font-family: 'Permanent Marker';
 `;
 
-const Postit = React.forwardRef(({type, title, description, refBounds}, ref) => {
+function useParallax(value, distance) {
+    return useTransform(value, [0, 1], [-distance, distance]);
+}
+
+const Postit = React.forwardRef(({container, containerIsInView, children}, ref) => {
     const [backgroundColor, setBackgroundColor] = useState(null);
     const [fontSize, setFontSize] = useState(null);
     const [translate, setTranslate] = useState(null);
+    const [rotate, setRotate] = useState(null);
+    
+
+    const { scrollYProgress } = useScroll({ target: container });
+    const y = useParallax(scrollYProgress, -(((getRandomIntInclusive(1,2) * 1000) + (getRandomIntInclusive(1,9) * 100))));
+    console.log(y);
 
     useLayoutEffect(() => {
         if (backgroundColor == null) {
@@ -54,19 +59,22 @@ const Postit = React.forwardRef(({type, title, description, refBounds}, ref) => 
         if (translate == null) {
             setTranslate(`${Math.random() + getRandomIntInclusive(-1, 1)}rem ${Math.random() + getRandomIntInclusive(-1, 1)}rem`);
         }
+        if (rotate == null) {
+            setRotate(`${getRandomIntInclusive(-15, 15)}deg`);
+        }
     }, []);
 
     return (
         backgroundColor &&
         fontSize &&
         translate &&
-            <StyledPostit className="postit" ref={ref} style={{ backgroundColor: backgroundColor }}>
-                <div>
-                    <motion.h2 style={{ fontSize: fontSize, translate: translate }}>{title}</motion.h2>
-                </div>
+            <StyledPostit className="postit" ref={ref} style={{ backgroundColor: backgroundColor, y: containerIsInView ? y : 0 }}>
+                <h2 style={{ rotate: rotate, fontSize: fontSize, translate: translate }}>{children}</h2>
             </StyledPostit>
     );
 });
+
+
 
 const StyledAnimatedPostit = styled(motion.div)`
     width: ${postitDimension};
@@ -78,9 +86,7 @@ const StyledAnimatedPostit = styled(motion.div)`
     z-index: 10;
 `;
 
-function useParallax(value, distance) {
-    return useTransform(value, [0, 1], [-distance, distance]);
-}
+
 
 const AnimatedPostit = ({container, containerInView, x, y, deg, ...props}) => {
     const [positionX, setPositionX] = useState(null);
@@ -158,4 +164,17 @@ const AnimatedPostit = ({container, containerInView, x, y, deg, ...props}) => {
     );
 };
 
-export { Postit, AnimatedPostit };
+const getPostitAnimationParameters = (container) => {
+    const body = document.getElementsByTagName('body')[0];
+    const vw = toPx(body, '1vw');
+    const vh = toPx(body, '1vh');
+    const postitDimensions = toPx(null, postitDimension);
+    const extra = parseInt(postitDimensions / 3);
+    const areaDimensions = container != null ? container : { width: toPx(body, '100vw'), height: toPx(body, '100vh') };
+    let randomX = getRandomIntInclusive(-extra, (areaDimensions.width - (extra * 2)));
+    let randomY = getRandomIntInclusive(-extra, (areaDimensions.height - (extra * 2)));
+
+    return { x: `${randomX / vw}vw`, y: `${randomY / vh}vh`, rotate: `${getRandomIntInclusive(-15, 15)}deg` };
+}
+
+export { Postit, AnimatedPostit, getPostitAnimationParameters };

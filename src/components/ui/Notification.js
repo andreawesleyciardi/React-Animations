@@ -64,8 +64,17 @@ const Notification = ({title, subtitle, content}) => {
                 duration: 0.5
             }
         },
-        exit: { y: '-100vh', opacity: 0, transition: { duration: 1 }, transitionEnd: { display: 'none' } }
-    }
+        exit: {
+            y: '-100vh',
+            opacity: 0,
+            transition: {
+                duration: 1
+            },
+            transitionEnd: {
+                display: 'none'
+            }
+        }
+    };
 
     return (
         <>
