@@ -74,19 +74,6 @@
                     }
                 }
             }
-            .jira__user {
-                width: 1.25rem;
-                aspect-ratio: 1;
-                color: #FFFFFF;
-                background-color: #172B4D;
-                border-radius: 50%;
-                line-height: 1;
-                font-size: 0.6rem;
-                font-weight: 700;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
         }
     }
 
@@ -377,6 +364,10 @@
             .jira__main--grid-column--done {
                 grid-area: donecolumn;
             }
+
+            .jira__main--grid-column {
+                padding: 0px 0.261rem 0.261rem 0.261rem;
+            }
         }
     }
 
@@ -389,5 +380,79 @@
 
     .jira__text--low-enphasis {
         color: #6B778C;
+    }
+
+    .jira__user {
+        width: 1.25rem;
+        aspect-ratio: 1;
+        color: #FFFFFF;
+        background-color: #172B4D;
+        border-radius: 50%;
+        line-height: 1.1;
+        font-size: 0.6rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.jira__ticket {
+    margin-top: 0.261rem;
+    padding: 0.521rem;
+    background-color: #FFFFFF;
+    border-radius: 0.104rem;
+    box-shadow: 0px 1px 2px 0px rgba(9,30,66,.25);
+    font-size: 0.73rem;
+    display: grid;
+    grid-template-areas: "title title" "left right";
+    gap: 0.521rem;
+    .jira__ticket--title {
+        grid-area: title;
+        font-size: 0.73rem;
+        font-weight: 400;
+        color: #172B4D;
+        line-height: 1.42857143;
+        max-height: 3.127rem;
+        overflow: hidden;
+    }
+    .jira__ticket--left {
+        grid-area: left;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.261rem;
+        svg {
+            width: 0.834rem;
+            aspect-ratio: 1;
+        }
+        .jira__ticket--points {
+            min-width: 1.355rem;
+            height: 1.094rem;
+            background-color: #DFE1E6;
+            padding: 0.156rem 0.365rem;
+            border-radius: 1.251rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            p {
+                font-size: 0.625;
+                font-weight: 600;
+                line-height: 0.834rem;
+                color: #172B4D;
+            }
+        }
+    }
+    .jira__ticket--right {
+        grid-area: right;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .jira__ticket--code {
+            margin-right: 0.261rem;
+            font-size: 0.73rem;
+            font-weight: 400;
+            color: #505f79;
+        }
     }
 }
