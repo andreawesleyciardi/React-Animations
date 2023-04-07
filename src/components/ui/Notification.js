@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, filterProps } from 'framer-motion';
 import useMeasure from 'react-use-measure';
 
 import Button from './Button';
@@ -75,7 +75,7 @@ const Notification = ({title, subtitle, content}) => {
             }
         }
     };
-
+    
     return (
         <>
             {

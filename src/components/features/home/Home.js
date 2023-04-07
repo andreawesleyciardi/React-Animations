@@ -5,6 +5,7 @@ import { mergeRefs } from 'react-merge-refs';
 
 import { getRandomIntInclusive } from './../../../services/Utilities';
 
+import Editor from '../../ui/Editor';
 import Monitor from '../../ui/Monitor';
 import Notification from '../../ui/Notification';
 import { Postit, getPostitAnimationParameters } from '../../ui/Postit';
@@ -25,7 +26,8 @@ const Home = () => {
 
     const refPostitSection = useRef(null);
     const postitIsInView = useInView(refPostitSection, { amount: 0.2 });
-    const postitIsFullyInView = useInView(refPostitSection, { amount: 0.5, once: true });
+    const postitIsHalfInView = useInView(refPostitSection, { amount: 0.5, once: true });
+    const [postitIsFinish, setPostitIsFinish] = useState(false);
     
     const { scrollYProgress } = useScroll({ target: refBoundsPostitSection });
     const y = [
@@ -33,6 +35,14 @@ const Home = () => {
         useParallax(scrollYProgress, -900),
         useParallax(scrollYProgress, -1800)
     ];
+
+    useEffect(() => {
+        if (postitIsHalfInView == true) {
+            setTimeout(() => {
+                setPostitIsFinish(true);
+            }, 2000);
+        }
+    }, [postitIsHalfInView]);
 
     useEffect(() => {
         if (boundsPostitSection.width > 0) {
@@ -83,9 +93,11 @@ const Home = () => {
 
     return (
         <>
-            
+            <section id="editor">
+                <Editor />
+            </section>
             <section id="notification">
-                {/* <Notification title="Test Notification" subtitle="This is a test for a notification" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non nunc ultrices, condimentum neque eu, luctus tellus. Cras vel imperdiet tortor. Donec ultricies felis non eros imperdiet, sit amet laoreet quam lobortis. Proin nec ipsum auctor, ullamcorper nisi at, gravida tellus. Integer sagittis velit non magna lobortis ornare. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed auctor bibendum massa id fermentum. Donec placerat justo vel nisi auctor, a dapibus magna volutpat. Suspendisse potenti." /> */}
+                <Notification title="Test Notification" subtitle="This is a test for a notification" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non nunc ultrices, condimentum neque eu, luctus tellus. Cras vel imperdiet tortor. Donec ultricies felis non eros imperdiet, sit amet laoreet quam lobortis. Proin nec ipsum auctor, ullamcorper nisi at, gravida tellus. Integer sagittis velit non magna lobortis ornare. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed auctor bibendum massa id fermentum. Donec placerat justo vel nisi auctor, a dapibus magna volutpat. Suspendisse potenti." />
             </section>
             <section id="notification2">
                 {/* <Notification title="Test Notification" subtitle="This is a test for a notification" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non nunc ultrices, condimentum neque eu, luctus tellus. Cras vel imperdiet tortor. Donec ultricies felis non eros imperdiet, sit amet laoreet quam lobortis. Proin nec ipsum auctor, ullamcorper nisi at, gravida tellus. Integer sagittis velit non magna lobortis ornare. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed auctor bibendum massa id fermentum. Donec placerat justo vel nisi auctor, a dapibus magna volutpat. Suspendisse potenti." /> */}
@@ -96,7 +108,7 @@ const Home = () => {
                         <motion.div className="postits__container" variants={postitsContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: '10% 0px 0px 0px' }}>
                             {
                                 postits.map((group, index) => 
-                                    <motion.div style={{ y: (postitIsFullyInView ? y[index] : 0) }} key={index}>
+                                    <motion.div style={{ y: (postitIsHalfInView ? y[index] : 0) }} key={index}>
                                         <div>
                                             {
                                                 group.postits.map((postit, indexGroup) => 
@@ -112,9 +124,13 @@ const Home = () => {
                         </motion.div>
                 }
             </section>
-            <section id="jira">
-                <Jira />
-            </section>
+            {
+                postitIsFinish
+                &&
+                    <motion.section id="jira" initial={{ opacity: 0, height: '0px' }} animate={{ opacity: 1, height: '100vh' }} transition={{ duration: 3 }}>
+                        <Jira />
+                    </motion.section>
+            }
         </>
     );
 }
